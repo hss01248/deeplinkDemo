@@ -85,11 +85,13 @@ public class H5Activity extends AppCompatActivity {
                     //LogUtils.i("shouldOverrideUrlLoading", request);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         if (!request.getUrl().getScheme().contains("http")) {
-                            /*if("intent".equals(request.getUrl().getScheme())){
-                                LogUtils.i("intent协议让chrome自己处理",request.getUrl());
-                                return false;
+                           /* if("intent".equals(request.getUrl().getScheme())){
+                                LogUtils.i("intent协议让chrome自己处理,但是tmd不处理",request.getUrl());
+                                return super.shouldOverrideUrlLoading(view, request);
                             }*/
-                           return DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
+                           boolean hasHandled =  DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
+                           return hasHandled;
+
                         }
                     }
 
@@ -101,10 +103,12 @@ public class H5Activity extends AppCompatActivity {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         if (request.isForMainFrame()) {
                             LogUtils.i("shouldInterceptRequest--> main frame", request.getUrl());
-                            if (!request.getUrl().getScheme().contains("http")) {
-                                DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
+                           /* if("intent".equals(request.getUrl().getScheme())){
+                                LogUtils.i("intent协议让chrome自己处理",request.getUrl());
                                 return null;
-                            }
+                            }*/
+                            boolean hasHandled =  DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
+                            return null;
                         }
                     }
                     return super.shouldInterceptRequest(view, request);

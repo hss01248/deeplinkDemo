@@ -53,14 +53,14 @@ public class BaseApp extends MultiDexApplication {
                                     return;
                                 }
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
+                                ActivityUtils.getTopActivity().startActivity(intent);
                             }catch (Throwable throwable){
                                 throwable.printStackTrace();
                               ToastUtils.showLong(throwable.getMessage());
                             }
                         }
                     }
-                }).show();
+                }).setActivity(ActivityUtils.getTopActivity()).show();
             }
 
             @Override
