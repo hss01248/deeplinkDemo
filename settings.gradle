@@ -1,0 +1,3 @@
+include ':deeplinktargetapp'
+include ':app'
+rootProject.name = "DeeplinkDemo"
