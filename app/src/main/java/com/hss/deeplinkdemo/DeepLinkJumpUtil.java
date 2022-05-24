@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -15,8 +16,10 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.hss01248.dialog.ActivityStackManager;
 
 
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +50,8 @@ public class DeepLinkJumpUtil {
     public static boolean jump(Context context,String newurl){
 
         if(newurl.startsWith("intent://")){
-            return jumpByIntent(context,newurl);
+            return jumpByIntent2(context,newurl);
+            //return jumpByIntent(context,newurl);
         }
         //弹窗选择:
         //if (!newurl.startsWith("http")) {
@@ -125,6 +129,32 @@ public class DeepLinkJumpUtil {
             }
 
         //}
+    }
+
+    private static boolean jumpByIntent2(Context context, String newurl) {
+        Intent intent = null;
+        try {
+            intent = Intent.parseUri(newurl, Intent.URI_INTENT_SCHEME);
+            intent.addCategory(Intent.CATEGORY_BROWSABLE);
+
+            intent.setComponent(null);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                intent.setSelector(null);
+            }
+            ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(intent, 0);
+            if(resolveInfo == null){
+                ToastUtils.showLong("没有对应的activity,跳去应用市场吧: " );//map.get("package")
+                return false;
+            }
+
+            //todo 弹窗提示
+            ActivityStackManager.getInstance().getTopActivity().startActivityIfNeeded(intent, -1);
+            //return jump(context, realUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     /**
