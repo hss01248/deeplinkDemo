@@ -74,24 +74,26 @@ public class H5Activity extends AppCompatActivity {
                         return settings;
                     }
                 })
-            .createAgentWeb().go(url);
+            .createAgentWeb().get();
 
         WebView webView = agentWeb.getWebCreator().getWebView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WebViewClient webViewClient = webView.getWebViewClient();
             DebugWebViewClient client = new DebugWebViewClient(webViewClient){
+                boolean hasInteceptedByUrlLoading = false;
                 @Override
                 public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    //LogUtils.i("shouldOverrideUrlLoading", request);
+                    LogUtils.i("shouldOverrideUrlLoading", request.getUrl());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        hasInteceptedByUrlLoading = false;
                         if (!request.getUrl().getScheme().contains("http")) {
                            /* if("intent".equals(request.getUrl().getScheme())){
                                 LogUtils.i("intent协议让chrome自己处理,但是tmd不处理",request.getUrl());
                                 return super.shouldOverrideUrlLoading(view, request);
                             }*/
                            boolean hasHandled =  DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
+                            hasInteceptedByUrlLoading = true;
                            return hasHandled;
-
                         }
                     }
 
@@ -102,13 +104,14 @@ public class H5Activity extends AppCompatActivity {
                 public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         if (request.isForMainFrame()) {
-                            LogUtils.i("shouldInterceptRequest--> main frame", request.getUrl());
-                           /* if("intent".equals(request.getUrl().getScheme())){
-                                LogUtils.i("intent协议让chrome自己处理",request.getUrl());
+                            LogUtils.i("shouldInterceptRequest--> main frame", request.getUrl(),"hasInteceptedByUrlLoading",hasInteceptedByUrlLoading);
+                            if (!request.getUrl().getScheme().contains("http")) {
+                                if(!hasInteceptedByUrlLoading){
+                                    boolean hasHandled =  DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
+                                }
+
                                 return null;
-                            }*/
-                            boolean hasHandled =  DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
-                            return null;
+                            }
                         }
                     }
                     return super.shouldInterceptRequest(view, request);
@@ -122,6 +125,7 @@ public class H5Activity extends AppCompatActivity {
             chromeClient.setLoggingEnabled(true);*/
 
         }
+        agentWeb.getUrlLoader().loadUrl(url);
 
 
     }
