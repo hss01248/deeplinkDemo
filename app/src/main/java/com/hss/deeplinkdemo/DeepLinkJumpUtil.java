@@ -134,6 +134,7 @@ public class DeepLinkJumpUtil {
     private static boolean jumpByIntent2(Context context, String newurl) {
         Intent intent = null;
         try {
+            //使用Intent.URI_INTENT_SCHEME,表示适配url为intent://开头的情况
             intent = Intent.parseUri(newurl, Intent.URI_INTENT_SCHEME);
             intent.addCategory(Intent.CATEGORY_BROWSABLE);
 

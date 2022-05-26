@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -33,5 +35,13 @@ public class MainActivity extends AppCompatActivity {
        H5Activity.start(this,"file:///android_asset/deeplinktest.html");
 
        //cr_AwContentsClient: No application can handle intent://zljnews/recipe/100390954#Intent;scheme=zljnews;package=com.hss.deeplinktargetapp;end
+    }
+
+    public void fromOpenPayToUseAkuPayTest(View view) {
+        DeepLinkJumpUtil.jump(this,"ak://m.akulaku.com?actionKey=miIMVAIAAAA=&codeValue=281666040098XYLk2t23UzUaxxxxx");
+    }
+
+    public void fromOpenPayToUseAkuPayProd(View view) {
+        ToastUtils.showLong("还没有配置好");
     }
 }

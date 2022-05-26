@@ -42,5 +42,19 @@
         android:onClick="inH5"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:onClick="fromOpenPayToUseAkuPayTest"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:text="fromOpenPayToUseAkuPay-测试环境"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:onClick="fromOpenPayToUseAkuPayProd"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:text="fromOpenPayToUseAkuPay-正式环境"
+        android:layout_height="wrap_content"/>
+
 
 </LinearLayout>
