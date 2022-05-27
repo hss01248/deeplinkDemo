@@ -159,7 +159,8 @@ public class DeepLinkJumpUtil {
     }
 
     /**
-     * chrome不会帮我们处理,构建系统intent也找不到对应的activity,需要自己改成标准格式: zljnews://news.zhoulujue.com/recipe/100390954
+     * chrome不会帮我们处理,构建系统intent(new Intent(Intent.ACTION_VIEW, Uri.parse(newurl)))也找不到对应的activity,
+     * 需要自己改成标准格式: zljnews://news.zhoulujue.com/recipe/100390954
      * @param context
      * @param newurl
      * @return
