@@ -42,93 +42,21 @@ public class H5Activity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
-    String url  = "";
+    WebView webView = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_h5);
-        url = getIntent().getStringExtra("url");
-        initWebView();
-
+         webView = DemoWebviewUtil.init(this,getIntent().getStringExtra("url"));
+        setContentView(webView);
     }
 
-    private void initWebView() {
-        AgentWeb agentWeb = AgentWeb.with(this)//传入Activity or Fragment
-                .setAgentWebParent(findViewById(R.id.ll_root),
-                        new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
-                //传入AgentWeb 的父控件 ，如果父控件为 RelativeLayout ， 那么第二参数需要传入 RelativeLayout.LayoutParams ,第一个参数和第二个参数应该对应。
-                .useDefaultIndicator()// 使用默认进度条
-                .setAgentWebWebSettings(new IAgentWebSettings() {
-                    WebSettings settings;
-
-                    @Override
-                    public IAgentWebSettings toSetting(WebView webView) {
-                        settings = webView.getSettings();
-                        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-                        settings.setAllowFileAccess(true);
-                        return this;
-                    }
-
-                    @Override
-                    public WebSettings getWebSettings() {
-                        return settings;
-                    }
-                })
-            .createAgentWeb().get();
-
-        WebView webView = agentWeb.getWebCreator().getWebView();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WebViewClient webViewClient = webView.getWebViewClient();
-            DebugWebViewClient client = new DebugWebViewClient(webViewClient){
-                boolean hasInteceptedByUrlLoading = false;
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    LogUtils.i("shouldOverrideUrlLoading", request.getUrl());
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        hasInteceptedByUrlLoading = false;
-                        if (!request.getUrl().getScheme().contains("http")) {
-                           /* if("intent".equals(request.getUrl().getScheme())){
-                                LogUtils.i("intent协议让chrome自己处理,但是tmd不处理",request.getUrl());
-                                return super.shouldOverrideUrlLoading(view, request);
-                            }*/
-                           boolean hasHandled =  DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
-                            hasInteceptedByUrlLoading = true;
-                           return hasHandled;
-                        }
-                    }
-
-                    return super.shouldOverrideUrlLoading(view, request);
-                }
-
-                @Override
-                public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        if (request.isForMainFrame()) {
-                            LogUtils.i("shouldInterceptRequest--> main frame", request.getUrl(),"hasInteceptedByUrlLoading",hasInteceptedByUrlLoading);
-                            if (!request.getUrl().getScheme().contains("http")) {
-                                if(!hasInteceptedByUrlLoading){
-                                    boolean hasHandled =  DeepLinkJumpUtil.jump(view.getContext(), request.getUrl().toString());
-                                }
-
-                                return null;
-                            }
-                        }
-                    }
-                    return super.shouldInterceptRequest(view, request);
-                }
-            };
-            client.setLoggingEnabled(true);
-            webView.setWebViewClient(client);
-
-            /*WebChromeClient webChromeClient = webView.getWebChromeClient();
-            DebugWebChromeClient chromeClient = new DebugWebChromeClient(webChromeClient);
-            chromeClient.setLoggingEnabled(true);*/
-
+    @Override
+    public void onBackPressed() {
+        if(webView.canGoBack()){
+            webView.goBack();
+            return;
         }
-        agentWeb.getUrlLoader().loadUrl(url);
-
-
+        super.onBackPressed();
     }
-
 }
