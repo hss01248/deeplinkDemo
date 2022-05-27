@@ -65,6 +65,7 @@ public class H5Activity extends AppCompatActivity {
                     @Override
                     public IAgentWebSettings toSetting(WebView webView) {
                         settings = webView.getSettings();
+                        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
                         settings.setAllowFileAccess(true);
                         return this;
                     }

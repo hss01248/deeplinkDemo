@@ -37,11 +37,5 @@ public class MainActivity extends AppCompatActivity {
        //cr_AwContentsClient: No application can handle intent://zljnews/recipe/100390954#Intent;scheme=zljnews;package=com.hss.deeplinktargetapp;end
     }
 
-    public void fromOpenPayToUseAkuPayTest(View view) {
-        DeepLinkJumpUtil.jump(this,"ak://m.akulaku.com?actionKey=miIMVAIAAAA=&codeValue=281666040098XYLk2t23UzUaxxxxx");
-    }
 
-    public void fromOpenPayToUseAkuPayProd(View view) {
-        ToastUtils.showLong("还没有配置好");
-    }
 }
