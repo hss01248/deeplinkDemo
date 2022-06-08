@@ -27,13 +27,28 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="news.zhoulujue.com"
-                    android:pathPattern="/.*"
-                    android:scheme="http" />
+                    android:scheme="https" />
                 <data
-                    android:host="news.zhoulujue.com"
-                    android:pathPattern="/.*"
+                    android:host="test-news.zhoulujue.com"
                     android:scheme="https" />
             </intent-filter>
+            <!--adb shell am start -W -a android.intent.action.VIEW -d "https://test-news.zhoulujue.com" com.hss.deeplinktargetapp-->
+
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="test-pay.zhoulujue.com"
+                    android:scheme="https" />
+                <data
+                    android:host="ec-openpay.zhoulujue.com"
+                    android:scheme="https" />
+            </intent-filter>
+
+            <!--多个参数要用斜杆隔离-->
+            <!--adb shell am start -W -a android.intent.action.VIEW -d "https://test-pay.zhoulujue.com?y=90\&a=c" com.hss.deeplinktargetapp-->
+            <!--adb shell am start -W -a android.intent.action.VIEW -d "https://ec-openpay.zhoulujue.com?xx=67\&a=c" com.hss.deeplinktargetapp-->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
