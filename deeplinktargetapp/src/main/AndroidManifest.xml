@@ -43,7 +43,7 @@
                     android:scheme="https" />
                 <data
                     android:host="ec-openpay.zhoulujue.com"
-                    android:scheme="https" />
+                    android:scheme="http" />
             </intent-filter>
 
             <!--多个参数要用斜杆隔离-->

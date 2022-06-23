@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void intentHttp(View view) {
-        DeepLinkJumpUtil.jump(this,"http://news.zhoulujue.com/article/123456/");
+        DeepLinkJumpUtil.jump(this,"https://news.zhoulujue.com/article/123456/");
     }
 
     public void webviewZL(View view) {
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void webviewHttp(View view) {
-        H5Activity.start(this,"http://news.zhoulujue.com/article/123456/");
+        H5Activity.start(this,"https://news.zhoulujue.com/article/123456/");
     }
 
     public void inH5(View view) {

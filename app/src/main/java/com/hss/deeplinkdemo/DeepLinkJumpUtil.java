@@ -1,5 +1,6 @@
 package com.hss.deeplinkdemo;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -59,6 +60,12 @@ public class DeepLinkJumpUtil {
                 context = ActivityUtils.getTopActivity();
                 // 以下固定写法
                 final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(newurl));
+
+                //指定包名
+                //intent.setPackage("com.hss.deeplinktargetapp");
+                //intent.setComponent(new ComponentName())
+
+
                 List<ResolveInfo> resolveInfos = context.getPackageManager().queryIntentActivities(intent, 0);
                 //  //context.getPackageManager().resolveActivity(intent, 0);
                 if(resolveInfos == null || resolveInfos.isEmpty()){
